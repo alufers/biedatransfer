@@ -172,7 +172,7 @@ func handleUpload(c *gin.Context) {
 	writePath := filepath.Join(viper.GetString("upload.dataDir"), cleanedPath)
 	dirPath := filepath.Dir(writePath)
 	os.MkdirAll(dirPath, 0777)
-	os.Remove(cleanedPath + "._infocache")
+	os.Remove(writePath + "._infocache")
 	f, err := os.Create(writePath)
 	defer f.Close()
 	if err != nil {
