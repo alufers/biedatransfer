@@ -33,7 +33,7 @@ func initConfig() {
 		"style.css",
 	})
 	viper.SetEnvPrefix("biedatransfer")
-	viper.SetConfigName("biedatransfer") // name of config file (without extension)
+	viper.SetConfigName("biedatransfer-config") // name of config file (without extension)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".") // optionally look for config in the working directory
 	viper.AddConfigPath("/etc/biedatransfer")
