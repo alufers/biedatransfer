@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico?d" />
+    <title>Biedatransfer</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="container">
+      <pre class="logo">
+<span class="logo-highlight"> ______  _____  ______  _____    ______ </span> _______  ______   ______   ______   ______   ______  ______  ______  
+<span class="logo-highlight">| |  | \  | |  | |     | | \ \  | |  | |</span>   | |   | |  | \ | |  | | | |  \ \ / |      | |     | |     | |  | \ 
+<span class="logo-highlight">| |--| <  | |  | |---- | |  | | | |__| |</span>   | |   | |__| | | |__| | | |  | | '------. | |---- | |---- | |__| | 
+<span class="logo-highlight">|_|__|_/ _|_|_ |_|____ |_|_/_/  |_|  |_|</span>   |_|   |_|  \_\ |_|  |_| |_|  |_|  ____|_/ |_|     |_|____ |_|  \_\
+                    </pre>
+      <div class="two-columns">
+        <div class="column">
+
+          <p>
+            Upload <input value="dupa.txt" class="filename-input">:
+              <pre class="code">$ curl --upload-file <span class="filename-placeholder">dupa.txt</span> {{ .URL }}/<span class="filename-placeholder">dupa.txt</span></pre>
+          </p>
+          <p>
+            Download:
+              <pre class="code">$ curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span> -o <span class="filename-placeholder">dupa.txt</span></pre>
+          </p>
+          <p>
+            Wait for the file to be uploaded and download:
+              <pre class="code">$ curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -o <span class="filename-placeholder">dupa.txt</span></pre>
+          </p>
+          <p>
+              Download the file every time it is uploaded:
+              <pre class="code bash">$ while :;do; curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -o <span class="filename-placeholder">dupa.txt</span>; done</pre>
+          </p>
+          <p>
+            ... or ...
+          </p>
+          <div class="drop-upload">
+            Drop your shit here
+            <div class="upload-progress" style="width: 0%;"></div>
+          </div>
+          <form class="upload-form">
+            <span>you can also:</span>
+            <input type="file" class="upload-input">
+            <button class="upload-confirm" disabled type="button" style="display: none;">GO!</button>
+          </form>
+        </div>
+        <div class="column">
+          <p>
+            Recently uploaded files:
+            <div class="error"></div>
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    Time
+                  </th>
+                  <th>
+                    Name
+                  </th>
+                  <th>
+                    Size
+                  </th>
+                  <th>
+                    Type
+                  </th>
+                  <th>
+                    Upload location
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="recent-uploads">
+    
+              </tbody>
+            </table>
+            <p>
+              <span class="text-secondary">[TIP]</span> Click the "Type" cell for more information & binwalk.
+            </p>
+           
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="/script.js"></script>
+  </body>
+</html>

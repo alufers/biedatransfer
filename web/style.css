@@ -1,0 +1,150 @@
+body,
+html {
+  background: black;
+  color: #efefefef;
+  padding: 0;
+  font-family: "Fira Code", "monospace";
+}
+.container {
+  margin-top: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+.logo {
+  color: orange;
+}
+.logo-highlight {
+  color: lightgreen;
+}
+pre.code {
+  background: #1f1f1f;
+  padding: 24px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.two-columns {
+  display: flex;
+  flex-direction: row;
+}
+table {
+  width: 100%;
+}
+.column {
+  width: 50%;
+}
+
+.column:first-child {
+  margin-right: 24px;
+}
+
+th {
+  text-align: left;
+}
+
+a {
+  color: orange;
+}
+
+.trunc {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-secondary {
+  color: lightgreen;
+}
+
+.drop-upload {
+  padding: 32px;
+  background: #2a2a2a;
+  border: 3px dashed #4a4a1a;
+  text-align: center;
+  color: #dfdfdfdf;
+  position: relative;
+}
+
+.highlight {
+  background: #2a4a2a;
+}
+
+.upload-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: lightgreen;
+  bottom: 0;
+  opacity: 0.5;
+  transition: 500ms;
+}
+
+.filename-placeholder {
+  color: lightgreen;
+}
+
+input {
+  background: transparent;
+  border: solid 1px #efefefef;
+  outline: none;
+  color: #efefefef;
+  font-family: inherit;
+}
+
+input[type="file"] {
+  border: none;
+}
+input[type="file"]::-webkit-file-upload-button,
+input[type="file"]::file-selector-button {
+  background: transparent;
+  border: solid 1px lightgreen;
+  color: lightgreen;
+}
+
+button {
+  background: transparent;
+  border: solid 1px lightgreen;
+  color: lightgreen;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: transparent;
+  border: solid 1px gray;
+  color: gray;
+  font-family: inherit;
+}
+
+button:hover {
+  background: lightgreen;
+  color: black;
+}
+
+.bash {
+  position: relative;
+}
+
+.bash::after {
+  content: "Bash";
+  text-transform: uppercase;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: darkgreen;
+  color: lightgray;
+  padding: 4px;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.upload-form span {
+  margin-right: 8px;
+}
