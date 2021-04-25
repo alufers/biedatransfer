@@ -84,8 +84,8 @@ function doUpload() {
     "progress",
     (event) => {
       var percent = Math.round((event.loaded / event.total) * 100);
-      document.querySelector(".upload-progress").style.width =
-        percent + "%";
+      console.log({ percent });
+      document.querySelector(".upload-progress").style.width = percent + "%";
     },
     false
   );

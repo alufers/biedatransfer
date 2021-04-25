@@ -51,7 +51,7 @@ func main() {
 	r.GET("/my-ip", func(c *gin.Context) {
 		remoteIP, trusted := c.RemoteIP()
 		sendWithFormat(c, 200, map[string]interface{}{
-			"clientIp": c.ClientIP(),
+			"clientIP": c.ClientIP(),
 			"remoteIP": remoteIP,
 			"trusted":  trusted,
 		})
@@ -158,7 +158,8 @@ func handleFileInfo(c *gin.Context) {
 func handleUpload(c *gin.Context) {
 	cleanedPath := CleanPath(c.Request.URL.Path)
 	forbiddenNames := viper.GetStringSlice("upload.forbiddenNames")
-	if filepath.Ext(strings.ToLower(cleanedPath)) == "._infocache" {
+	extension := filepath.Ext(strings.ToLower(cleanedPath))
+	if extension == "._infocache" || extension == "._infolock" {
 		sendError(c, 400, "Forbidden filename extension (._infocache)!")
 		return
 	}
@@ -173,6 +174,7 @@ func handleUpload(c *gin.Context) {
 	dirPath := filepath.Dir(writePath)
 	os.MkdirAll(dirPath, 0777)
 	os.Remove(writePath + "._infocache")
+	os.Remove(writePath + "._infolock")
 	f, err := os.Create(writePath)
 	defer f.Close()
 	if err != nil {
@@ -246,7 +248,24 @@ func waitForFileChange(c *gin.Context, cleanedPath string) {
 	select {
 	case <-listenerChan:
 	case <-c.Request.Context().Done():
-		log.Printf("request cancelled")
+		func() {
+			listenersMutex.Lock()
+			defer listenersMutex.Unlock()
+			if listOfListeners, ok := listeners[cleanedPath]; ok {
+				newList := make([]chan interface{}, 0, len(listOfListeners)-1)
+				for _, l := range listOfListeners {
+					if l != listenerChan {
+						newList = append(newList, l)
+					}
+				}
+				if len(newList) == 0 {
+					delete(listeners, cleanedPath)
+				} else {
+					listeners[cleanedPath] = newList
+				}
+			}
+		}()
+
 		c.String(200, "cancelled")
 		return
 	}

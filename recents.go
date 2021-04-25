@@ -51,11 +51,11 @@ func getRecents() (interface{}, error) {
 		recentsPath := filepath.Join(viper.GetString("upload.dataDir"), "./recents.json")
 		data, err := os.ReadFile(recentsPath)
 		if err != nil {
-			return nil, fmt.Errorf("failed to open %v: %w", recentsPath, data)
+			return nil, fmt.Errorf("failed to open %v: %w", recentsPath, err)
 		}
 		var output interface{}
 		if err := json.Unmarshal(data, &output); err != nil {
-			return nil, fmt.Errorf("failed to parse %v: %w", recentsPath, data)
+			return nil, fmt.Errorf("failed to parse %v: %w", recentsPath, err)
 		}
 		cachedRecents = output
 	}
