@@ -109,6 +109,14 @@ func handleDownload(c *gin.Context) {
 func handleFileInfo(c *gin.Context) {
 	cleanedPath := CleanPath(c.Request.URL.Path)
 	writePath := filepath.Join(viper.GetString("upload.dataDir"), cleanedPath)
+
+	for {
+		if _, err := os.Stat(writePath + ".infolock"); err != nil {
+			break
+		}
+		time.Sleep(time.Millisecond * 500)
+	}
+
 	// try returning the cached stuff
 	if rawData, err := os.ReadFile(writePath + "._infocache"); err == nil {
 		var cached map[string]interface{}
@@ -120,6 +128,12 @@ func handleFileInfo(c *gin.Context) {
 			return
 		}
 	}
+	f, err := os.Create(writePath + ".infolock")
+	if err != nil {
+		sendError(c, 500, fmt.Sprintf("failed to create lock: %v", err))
+		return
+	}
+	defer f.Close()
 	infoToOutput := map[string]interface{}{}
 	var fileType = "Unknown"
 	m, err := magic.Open(magic.MAGIC_NONE)
@@ -150,6 +164,7 @@ func handleFileInfo(c *gin.Context) {
 	if marshalled, err := json.Marshal(infoToOutput); err == nil {
 		os.WriteFile(writePath+"._infocache", marshalled, 0777) // ignore errors, this is only a cache lol
 	}
+	os.Remove(writePath + ".infolock")
 	sendWithFormat(c, 200, infoToOutput, map[string]interface{}{
 		"PageType": "info",
 	})
