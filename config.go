@@ -32,6 +32,13 @@ func initConfig() {
 		"./",
 		"style.css",
 	})
+	viper.SetDefault("upload.forbiddenPrefixes", []string{
+		".well-known", // letsencrypt site verification
+		".git",
+		".htaccess",
+		".htpasswd",
+		"google", // google website verifification
+	})
 	viper.SetEnvPrefix("biedatransfer")
 	viper.SetConfigName("biedatransfer-config") // name of config file (without extension)
 	viper.SetConfigType("yaml")
