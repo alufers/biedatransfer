@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      body,
+      textarea {
+        background: black;
+        color: pink;
+      }
+      .chat {
+        height: 600px;
+        overflow-y: scroll;
+        border: 1px solid pink;
+      }
+      textarea {
+        border: 1px solid pink;
+      }
+    </style>
+    <div class="chat"></div>
+    <textarea rows="5" cols="100" class="message-entry"></textarea>
+    <button onclick="send()">Send!</button>
+    <script>
+      function scrollToBottom() {
+        var objDiv = document.querySelector(".chat");
+        objDiv.scrollTop = objDiv.scrollHeight;
+      }
+
+      scrollToBottom();
+
+      function escapeHtml(unsafe) {
+        unsafe = unsafe.toString();
+        if (typeof unsafe !== "string") {
+          throw new Error("Cannot escape " + typeof unsafe);
+        }
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+      async function run() {
+        while (true) {
+          try {
+            const resp = await fetch("?wait");
+            const text = await resp.text();
+            var el = document.createElement("html");
+            el.innerHTML = text;
+            console.log(el);
+            console.log(el.innerHTML);
+            document.querySelector(".chat").innerHTML = el.querySelector(
+              ".chat"
+            ).innerHTML;
+            scrollToBottom();
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }
+      run();
+      async function send() {
+        let nick = localStorage.getItem("name");
+        while (!nick) {
+          nick = prompt("Who are you?");
+          localStorage.setItem("name", nick);
+        }
+        document.querySelector(".chat").innerHTML += `<div><strong>${escapeHtml(
+          nick
+        )}: </strong> ${escapeHtml(
+          document.querySelector(".message-entry").value
+        )}</div>`;
+        document.querySelector(".message-entry").value = "";
+        try {
+          const resp = await fetch("?", {
+            method: "PUT",
+            body: `<!DOCTYPE html>
+            <html lang="en">
+            ${document.body.parentElement.innerHTML}
+            </html>`,
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    </script>
+  </body>
+</html>

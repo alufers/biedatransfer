@@ -44,10 +44,10 @@ func handleUpload(c *gin.Context) {
 	os.Remove(writePath + "._infocache")
 	os.Remove(writePath + "._infolock")
 	f, err := os.Create(writePath)
-	defer f.Close()
 	if err != nil {
 		sendError(c, 500, fmt.Sprintf("failed to create file %v: %v", cleanedPath, err))
 	}
+	defer f.Close()
 	fileSize, err := io.Copy(f, c.Request.Body)
 	if err != nil {
 		sendError(c, 500, fmt.Sprintf("failed to copy` file %v: %v", cleanedPath, err))

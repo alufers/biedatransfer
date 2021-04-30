@@ -13,6 +13,16 @@ html {
 .logo {
   color: orange;
 }
+@media (max-width: 860px) {
+  .logo {
+    font-size: 10px;
+  }
+}
+@media (max-width: 610px) {
+  .logo {
+    font-size: 7px;
+  }
+}
 .logo-highlight {
   color: lightgreen;
 }
@@ -21,17 +31,38 @@ pre.code {
   padding: 24px;
   margin-top: 16px;
   margin-bottom: 16px;
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+pre.code::-webkit-scrollbar {
+  display: none;
+}
+
+table {
+  width: 100%;
 }
 
 .two-columns {
   display: flex;
   flex-direction: row;
 }
-table {
-  width: 100%;
-}
 .column {
   width: 50%;
+}
+
+@media (max-width: 1250px) {
+  .two-columns {
+    display: flex;
+    flex-direction: column;
+  }
+  .column {
+    width: 100%;
+  }
+  .container { 
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 
 .column:first-child {
