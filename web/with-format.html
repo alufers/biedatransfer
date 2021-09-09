@@ -11,20 +11,12 @@
   <body>
     <div class="container">
       {{ if eq .PageType "info" }}
-        <h1>{{ .Data.name }}</h1>
-        <p>
-          <a href="?info&json">[JSON]</a> 
-          <a href="?">[DOWNLOAD FILE]</a>
-        </p>
-      {{ end }}
-      <ul>
-        {{ range $key, $value := .Data }}
-        <li>
-          <strong>{{ $key }}</strong>:
-          <pre>{{ $value }}</pre>
-        </li>
-        {{ end }}
-      </ul>
+      <h1>{{ .Data.name }}</h1>
+      <p>
+        <a href="?info&json">[JSON]</a>
+        <a href="?">[DOWNLOAD FILE]</a>
+      </p>
+      {{ end }} {{ .DataHTML }}
       <p>
         <a href="/">Back to home</a>
       </p>

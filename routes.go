@@ -1,6 +1,9 @@
 package main
 
 import (
+	"html/template"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 )
@@ -8,8 +11,14 @@ import (
 func setupRoutes(r *gin.Engine) {
 	r.LoadHTMLGlob("web/*.html")
 	r.GET("/", func(c *gin.Context) {
+
+		urlStr := viper.GetString("http.url")
+
+		urlStr = strings.ReplaceAll(urlStr, "http://", `<span class="url-proto">http://</span>`)
+		urlStr = strings.ReplaceAll(urlStr, "https://", `<span class="url-proto">https://</span>`)
+
 		c.HTML(200, "index.html", map[string]interface{}{
-			"URL": viper.GetString("http.url"),
+			"URL": template.HTML(urlStr),
 		})
 	})
 	r.GET("/favicon.ico", func(c *gin.Context) {
@@ -41,7 +50,7 @@ func setupRoutes(r *gin.Engine) {
 		c.File("web/style.css")
 	})
 	r.NoRoute(func(c *gin.Context) {
-		if c.Request.Method == "PUT" {
+		if c.Request.Method == "PUT" || c.Request.Method == "POST" {
 			handleUpload(c)
 			return
 		}

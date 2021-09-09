@@ -1,5 +1,5 @@
 FROM archlinux:base-devel
-RUN pacman -Sy --noconfirm && pacman -S --noconfirm binwalk file go
+RUN pacman -Sy --noconfirm && pacman -S --noconfirm binwalk file go perl-image-exiftool
 WORKDIR /go/src/app
 COPY . .
 

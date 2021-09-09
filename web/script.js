@@ -10,6 +10,9 @@ function escapeHtml(unsafe) {
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
 }
+
+// handle changing the filename in the input, reflect the changes in the examples
+
 function updateFilename(val) {
   localStorage.setItem("filename", val);
   document.querySelector(".filename-input").value = val;
@@ -23,6 +26,8 @@ document.querySelector(".filename-input").addEventListener("keyup", (ev) => {
 if (localStorage.getItem("filename")) {
   updateFilename(localStorage.getItem("filename"));
 }
+
+// handle drop area
 
 let dropArea = document.querySelector(".drop-upload");
 
@@ -64,6 +69,8 @@ function handleDrop(e) {
   doUpload();
 }
 
+// handle the Browse... input
+
 document.querySelector(".upload-input").addEventListener("change", (ev) => {
   let files = ev.target.files;
   updateFilename(files[0].name);
@@ -101,6 +108,9 @@ function doUpload() {
   );
   fetchRecents();
 }
+
+// handle recents
+
 async function fetchRecents(wait = false) {
   const resp = await fetch("/recents.json" + (wait ? "?wait" : ""));
   if (!resp.ok) {
@@ -145,3 +155,51 @@ async function run() {
   }
 }
 run().catch(console.error);
+
+// handle http/https switching
+
+function updateHttpsHttpState() {
+  const isHttp = document.querySelector(".url-proto").textContent === "http://";
+  let a = document.querySelector(isHttp ? ".btn-http" : ".btn-https");
+  let b = document.querySelector(!isHttp ? ".btn-http" : ".btn-https");
+  a.classList.add("active");
+  b.classList.remove("active");
+}
+
+document.querySelector(".btn-http").addEventListener("click", () => {
+  Array.from(document.querySelectorAll(".url-proto")).forEach(
+    (elem) => (elem.textContent = "http://")
+  );
+  updateHttpsHttpState();
+});
+
+document.querySelector(".btn-https").addEventListener("click", () => {
+  Array.from(document.querySelectorAll(".url-proto")).forEach(
+    (elem) => (elem.textContent = "https://")
+  );
+  updateHttpsHttpState();
+});
+
+document.querySelector(".btn-wget").addEventListener("click", function () {
+  Array.from(document.querySelectorAll(".wget")).forEach(
+    (elem) => (elem.style.display = "block")
+  );
+  Array.from(document.querySelectorAll(".curl")).forEach(
+    (elem) => (elem.style.display = "none")
+  );
+  this.classList.add("active");
+  document.querySelector(".btn-curl").classList.remove("active");
+});
+
+document.querySelector(".btn-curl").addEventListener("click", function () {
+  Array.from(document.querySelectorAll(".curl")).forEach(
+    (elem) => (elem.style.display = "block")
+  );
+  Array.from(document.querySelectorAll(".wget")).forEach(
+    (elem) => (elem.style.display = "none")
+  );
+  this.classList.add("active");
+  document.querySelector(".btn-wget").classList.remove("active");
+});
+
+updateHttpsHttpState();

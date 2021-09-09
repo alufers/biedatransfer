@@ -49,7 +49,7 @@ func initConfig() {
 		log.Printf("failed to read config file: %v", err)
 	}
 	if writeConfig {
-		log.Print(viper.SafeWriteConfig())
+		log.Print(viper.SafeWriteConfigAs("biedatransfer-config.yaml"))
 		os.Exit(0)
 	}
 }

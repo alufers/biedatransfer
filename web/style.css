@@ -3,7 +3,7 @@ html {
   background: black;
   color: #efefefef;
   padding: 0;
-  font-family: "Fira Code", "monospace";
+  font-family: "Fira Code", monospace;
 }
 .container {
   margin-top: 30px;
@@ -134,6 +134,7 @@ input[type="file"]::file-selector-button {
 }
 
 button {
+  outline: none;
   background: transparent;
   border: solid 1px lightgreen;
   color: lightgreen;
@@ -150,6 +151,16 @@ button:disabled {
 
 button:hover {
   background: lightgreen;
+  color: black;
+}
+
+button:active {
+  background: orange;
+  color: black;
+}
+
+button.active {
+  background: darkorange;
   color: black;
 }
 
@@ -178,4 +189,34 @@ button:hover {
 
 .upload-form span {
   margin-right: 8px;
+}
+
+.sect {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.controls-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.controls-spacer {
+  height: 1px;
+  width: 15px;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.controls button:not(:last-child) {
+  border-right: none;
+}
+
+.wget {
+  display: none;
 }

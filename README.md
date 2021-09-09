@@ -7,7 +7,7 @@ An easy to use and simple file transfer website built in Golang.
 It allows for file upload using the web interface (drag and drop) or via `curl`
 
 
-It also parses the uploaded files using `binwalk`, `file` and `ldd` and displays the data on a separate page.
+It also parses the uploaded files using `binwalk`, `file`, `exiftool` and `ldd` and displays the data on a separate page.
 
 ![Screenshot](./docs/screenshot_details.png)
 
@@ -23,9 +23,9 @@ http:
   mode: debug
   trustedproxies:
   - 127.0.0.0/24
-  url: https://t.aa4.eu
+  url: http://localhost:8080
 upload:
-  datadir: /etc/biedatransfer/data
+  datadir: ./data
   forbiddennames:
   - index.html
   - index.htm
@@ -42,6 +42,13 @@ upload:
   - /
   - ./
   - style.css
-  locationdatabasepath: /etc/biedatransfer/IP2LOCATION-LITE-DB5.BIN
+  forbiddenprefixes:
+  - .well-known
+  - .git
+  - .htaccess
+  - .htpasswd
+  - google
+  locationdatabasepath: ./IP2LOCATION-LITE-DB5.BIN
   recentssize: 40
+
 ```

@@ -65,6 +65,14 @@ func handleFileInfo(c *gin.Context) {
 	binwalkOutput, _ := cmd.CombinedOutput()
 	infoToOutput["binwalk"] = string(binwalkOutput)
 
+	exiftoolCmd := exec.Command("exiftool", "-j", writePath)
+	exiftoolOutput, _ := exiftoolCmd.CombinedOutput()
+
+	var exiftoolOutputParsed interface{} = nil
+	json.Unmarshal(exiftoolOutput, &exiftoolOutputParsed)
+
+	infoToOutput["exiftool"] = exiftoolOutputParsed
+
 	lddCmd := exec.Command("ldd", writePath)
 	lddOutput, _ := lddCmd.CombinedOutput()
 	infoToOutput["ldd"] = string(lddOutput)

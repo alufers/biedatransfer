@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"html"
+	"html/template"
 	"os"
 	"path/filepath"
 	"sort"
@@ -49,6 +51,28 @@ func sendError(c *gin.Context, status int, message string) {
 	})
 }
 
+func dataToHtml(data interface{}) string {
+	switch v := data.(type) {
+	case map[string]interface{}:
+		out := "<ul>"
+		for k, val := range v {
+			out += fmt.Sprintf("<li><strong>%v</strong>:%v</li>", html.EscapeString(k), dataToHtml(val))
+		}
+		out += "</ul>"
+		return out
+
+	case []interface{}:
+		out := "<ul>"
+		for _, val := range v {
+			out += fmt.Sprintf("<li>%v</li>", dataToHtml(val))
+		}
+		out += "</ul>"
+		return out
+	default:
+		return fmt.Sprintf("<pre>%v</pre>", html.EscapeString(fmt.Sprintf("%v", v)))
+	}
+}
+
 func sendWithFormat(c *gin.Context, status int, data map[string]interface{}, extraTemplateData ...map[string]interface{}) {
 	accept := strings.Split(strings.ToLower(c.GetHeader("Accept")), ",")[0]
 	if _, forceJson := c.GetQuery("json"); forceJson {
@@ -67,6 +91,7 @@ func sendWithFormat(c *gin.Context, status int, data map[string]interface{}, ext
 	case "application/xhtml+xml":
 		tplData := map[string]interface{}{
 			"Data":     data,
+			"DataHTML": template.HTML(dataToHtml(data)),
 			"Status":   status,
 			"PageType": "unknown",
 		}
@@ -78,8 +103,7 @@ func sendWithFormat(c *gin.Context, status int, data map[string]interface{}, ext
 		c.HTML(status, "with-format.html", tplData)
 		return
 	}
-
-	if strings.HasPrefix(c.GetHeader("User-Agent"), "curl/") {
+	if strings.HasPrefix(c.GetHeader("User-Agent"), "curl/") || strings.HasPrefix(strings.ToLower(c.GetHeader("User-Agent")), "wget/") {
 		colored := ""
 		keys := make([]string, 0)
 		data = collapseSizes(data)
