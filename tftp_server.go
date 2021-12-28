@@ -77,7 +77,7 @@ func tftpWriteHandler(filename string, wf io.WriterTo) error {
 	}
 
 	data := map[string]interface{}{
-		"url":       viper.GetString("http.url") + cleanedPath,
+		"url":       viper.GetString("http.url") + "/" + cleanedPath,
 		"sizeExact": n,
 		"size":      datasize.ByteSize(n).HR(),
 		"type":      fileType,
