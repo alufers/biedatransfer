@@ -35,6 +35,13 @@ pre.code {
   scrollbar-width: none;
 }
 
+.warn {
+  color: orange;
+
+  padding: 22px;
+  border: 2px solid orange;
+}
+
 pre.code::-webkit-scrollbar {
   display: none;
 }
@@ -59,7 +66,7 @@ table {
   .column {
     width: 100%;
   }
-  .container { 
+  .container {
     margin-left: 10px;
     margin-right: 10px;
   }
@@ -217,6 +224,7 @@ button.active {
   border-right: none;
 }
 
-.wget {
+.wget,
+.tftp {
   display: none;
 }

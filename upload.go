@@ -17,26 +17,9 @@ import (
 
 func handleUpload(c *gin.Context) {
 	cleanedPath := CleanPath(c.Request.URL.Path)
-	forbiddenNames := viper.GetStringSlice("upload.forbiddenNames")
-	forbiddenPrefixes := viper.GetStringSlice("upload.forbiddenPrefixes")
-	extension := filepath.Ext(strings.ToLower(cleanedPath))
-	if extension == "._infocache" || extension == "._infolock" {
-		sendError(c, 400, "Forbidden filename extension (._infocache)!")
+	if err := validateUploadFilename(cleanedPath); err != nil {
+		sendError(c, 400, err.Error())
 		return
-	}
-	for _, n := range forbiddenNames {
-		lowercase := strings.ToLower(cleanedPath)
-		if strings.ToLower(n) == lowercase || strings.ToLower("/"+n) == lowercase {
-			sendError(c, 400, "Forbidden filename!")
-			return
-		}
-	}
-	for _, n := range forbiddenPrefixes {
-		lowercase := strings.ToLower(cleanedPath)
-		if strings.HasPrefix(lowercase, strings.ToLower(n)) || strings.HasPrefix(lowercase, strings.ToLower("/"+n)) {
-			sendError(c, 400, fmt.Sprintf("Forbidden filename prefix: %v!", n))
-			return
-		}
 	}
 	writePath := filepath.Join(viper.GetString("upload.dataDir"), cleanedPath)
 	dirPath := filepath.Dir(writePath)

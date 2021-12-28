@@ -27,14 +27,17 @@
                 <div class="controls">
                   <button class="btn-https">HTTPS</button>
                   <button class="btn-http">HTTP</button>
+                  <button class="btn-tftp">TFTP</button>
                 </div>
                 <div class="controls-spacer">&nbsp;</div>
-                <div class="controls">
+                <div class="controls bttns-curl-wget">
                   <button class="active btn-curl">CURL</button>
                   <button class="btn-wget">WGET</button>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="http-or-https">
             <pre
               class="code curl"
             >$ curl --upload-file <span class="filename-placeholder">dupa.txt</span> {{ .URL }}/<span class="filename-placeholder">dupa.txt</span></pre>
@@ -42,47 +45,79 @@
             <pre
               class="code wget"
             >$ wget --post-file <span class="filename-placeholder">dupa.txt</span> {{ .URL }}/<span class="filename-placeholder">dupa.txt</span> -O -</pre>
+            <div class="curl">
+              <div class="sect">
+                Download:
+                <pre
+                  class="code"
+                >$ curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span> -o <span class="filename-placeholder">dupa.txt</span></pre>
+              </div>
+              <div class="sect">
+                Wait for the file to be uploaded and download:
+                <pre
+                  class="code"
+                >$ curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -o <span class="filename-placeholder">dupa.txt</span></pre>
+              </div>
+              <div class="sect">
+                Download the file every time it is uploaded:
+                <pre
+                  class="code bash"
+                >$ while :;do; curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -o <span class="filename-placeholder">dupa.txt</span>; done</pre>
+              </div>
+            </div>
+
+            <div class="wget">
+              <div class="sect">
+                Download:
+                <pre
+                  class="code"
+                >$ wget {{ .URL }}/<span class="filename-placeholder">dupa.txt</span></pre>
+              </div>
+              <div class="sect">
+                Wait for the file to be uploaded and download:
+                <pre
+                  class="code"
+                >$ wget {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -O <span class="filename-placeholder">dupa.txt</span></pre>
+              </div>
+              <div class="sect">
+                Download the file every time it is uploaded:
+                <pre
+                  class="code bash"
+                >$ while :;do; wget {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -O <span class="filename-placeholder">dupa.txt</span>; done</pre>
+              </div>
+            </div>
           </div>
 
-          <div class="curl">
+          <div class="tftp">
             <div class="sect">
-              Download:
               <pre
                 class="code"
-              >$ curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span> -o <span class="filename-placeholder">dupa.txt</span></pre>
+              >tftp {{ .TFTPExamplesAddr }} -c put <span class="filename-placeholder">dupa.txt</span> {{ .TFTPPrefix }}<span class="filename-placeholder">dupa.txt</span></pre>
+            </div>
+            <div class="warn">
+              The files uploaded via TFTP must have a prefix of
+              <strong>{{ .TFTPPrefix }}</strong>. Otherwise they will be
+              rejected to prevent abuse.
             </div>
             <div class="sect">
-              Wait for the file to be uploaded and download:
+              Download (tftp-hpa):
               <pre
                 class="code"
-              >$ curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -o <span class="filename-placeholder">dupa.txt</span></pre>
+              >tftp {{ .TFTPExamplesAddr }} -c get bt-<span class="filename-placeholder">dupa.txt</span></pre>
             </div>
-            <div class="sect">
-              Download the file every time it is uploaded:
-              <pre
-                class="code bash"
-              >$ while :;do; curl {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -o <span class="filename-placeholder">dupa.txt</span>; done</pre>
-            </div>
-          </div>
 
-          <div class="wget">
             <div class="sect">
-              Download:
+              Upload (busybox tftp client):
               <pre
                 class="code"
-              >$ wget {{ .URL }}/<span class="filename-placeholder">dupa.txt</span></pre>
+              >tftp -l <span class="filename-placeholder">dupa.txt</span> -r bt-<span class="filename-placeholder">dupa.txt</span> -p {{ .TFTPExamplesAddr }}</pre>
             </div>
+
             <div class="sect">
-              Wait for the file to be uploaded and download:
+              Upload (busybox tftp client):
               <pre
                 class="code"
-              >$ wget {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -O <span class="filename-placeholder">dupa.txt</span></pre>
-            </div>
-            <div class="sect">
-              Download the file every time it is uploaded:
-              <pre
-                class="code bash"
-              >$ while :;do; wget {{ .URL }}/<span class="filename-placeholder">dupa.txt</span>?wait -O <span class="filename-placeholder">dupa.txt</span>; done</pre>
+              >tftp -l <span class="filename-placeholder">dupa.txt</span> -r bt-<span class="filename-placeholder">dupa.txt</span> -g {{ .TFTPExamplesAddr }}</pre>
             </div>
           </div>
 

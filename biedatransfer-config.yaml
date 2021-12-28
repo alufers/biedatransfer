@@ -1,0 +1,36 @@
+http:
+  addr: :8082
+  mode: debug
+  trustedproxies:
+  - 127.0.0.0/24
+  url: http://localhost:8082/
+tftp:
+  enabled: true
+  writePrefix: bt-
+  examplesAddr: localhost
+upload:
+  datadir: ./data
+  forbiddennames:
+  - index.html
+  - index.htm
+  - robots.txt
+  - humans.txt
+  - favicon.ico
+  - wp-admin.php
+  - xmlrpc.php
+  - .env
+  - .git
+  - .config
+  - recents.json
+  - .
+  - /
+  - ./
+  - style.css
+  forbiddenprefixes:
+  - .well-known
+  - .git
+  - .htaccess
+  - .htpasswd
+  - google
+  locationdatabasepath: ./IP2LOCATION-LITE-DB5.BIN
+  recentssize: 40

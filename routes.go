@@ -18,7 +18,9 @@ func setupRoutes(r *gin.Engine) {
 		urlStr = strings.ReplaceAll(urlStr, "https://", `<span class="url-proto">https://</span>`)
 
 		c.HTML(200, "index.html", map[string]interface{}{
-			"URL": template.HTML(urlStr),
+			"URL":              template.HTML(urlStr),
+			"TFTPPrefix":       template.HTML(viper.GetString("tftp.writePrefix")),
+			"TFTPExamplesAddr": template.HTML(viper.GetString("tftp.examplesAddr")),
 		})
 	})
 	r.GET("/favicon.ico", func(c *gin.Context) {

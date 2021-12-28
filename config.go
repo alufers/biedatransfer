@@ -12,6 +12,10 @@ func initConfig() {
 	viper.SetDefault("http.url", "http://localhost:8080")
 	viper.SetDefault("http.mode", "debug")
 	viper.SetDefault("http.trustedProxies", []string{"127.0.0.0/24"})
+	viper.SetDefault("tftp.enabled", true)
+	viper.SetDefault("tftp.writePrefix", "bt-")
+	viper.SetDefault("tftp.examplesAddr", "localhost")
+
 	viper.SetDefault("upload.dataDir", "./data")
 	viper.SetDefault("upload.locationDatabasePath", "./IP2LOCATION-LITE-DB5.BIN")
 	viper.SetDefault("upload.recentsSize", 40)

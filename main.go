@@ -25,6 +25,7 @@ func main() {
 	r := gin.Default()
 	gin.SetMode(viper.GetString("http.mode"))
 	setupRoutes(r)
+	go runTftpServer()
 	r.Run(viper.GetString("http.addr"))
 
 }
